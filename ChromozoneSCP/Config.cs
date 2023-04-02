@@ -7,5 +7,7 @@ namespace ChromozoneSCP
         public bool IsEnabled { get; set; } = true;
 
         public bool Debug { get; set; }
+        
+        public int SwapTimeout { get; set; } = 30;
     }
 }
