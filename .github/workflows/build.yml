@@ -7,34 +7,42 @@ on:
     branches: [ main ]
     
 env:
-  PROJECT_FILE: ChromozoneSCP/ChromozoneSCP.csproj
-  PROJECT_BIN: ChromozoneSCP/bin/Release
+  REFERENCES_URL: https://exiled.host/build_deps/Dev.zip
+  REFERENCES_PATH: ${{ github.workspace }}/References
     
 jobs:
   build:
     runs-on: windows-latest
     
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'dhkatz/ChromozoneSCP'
-    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.1
-        with:
-          msbuild-architecture: x64
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3
 
       - name: Install Dependencies
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
-        run: nuget restore ${{ env.PROJECT_FILE }}
+        run: nuget restore
+        
+      - name: Get References
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri ${{ env.REFERENCES_URL }} -OutFile ${{ github.workspace }}/Dev.zip
+          Expand-Archive -Path Dev.zip -DestinationPath ${{ env.REFERENCES_PATH }}
+          
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        with:
+          msbuild-architecture: x64
       
       - name: Build
         working-directory: ${{ env.GITHUB_WORKSPACE }}
-        run: msbuild ${{ env.PROJECT_FILE }} /m /p:Configuration=Release
+        run: msbuild ChromozoneSCP\ChromozoneSCP.csproj -p:Configuration=Release -p:ReferencePath="${{ env.REFERENCES_PATH }}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Build Results
-          path: ./${{ env.PROJECT_BIN }}
+          name: ChromzoneSCP
+          path: "ChromozoneSCP/bin/Release/ChromozoneSCP.dll"
