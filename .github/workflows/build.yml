@@ -25,9 +25,6 @@ jobs:
         with:
           msbuild-architecture: x64
 
-#      - name: Setup Nuget
-#        uses: iRebbok/setup-nuget@master
-
       - name: Install Dependencies
         working-directory: ${{ env.GITHUB_WORKSPACE }}
         run: nuget restore ${{ env.PROJECT_FILE }}
@@ -37,6 +34,7 @@ jobs:
         run: msbuild ${{ env.PROJECT_FILE }} /m /p:Configuration=Release
 
       - name: Upload artifacts
+        working-directory: ${{ env.GITHUB_WORKSPACE }}
         uses: actions/upload-artifact@v2
         with:
           name: Build Results
