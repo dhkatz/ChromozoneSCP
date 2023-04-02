@@ -27,7 +27,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: ${{ env.GITHUB_WORKSPACE }}
-        run: dotnet restore ${{ env.PROJECT_FILE }}
+        run: dotnet restore ${{ env.PROJECT_FILE }} --verbosity detailed
       
       - name: Build
         working-directory: ${{ env.GITHUB_WORKSPACE }}
