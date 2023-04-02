@@ -8,20 +8,13 @@ on:
     
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'dhkatz/ChromozoneSCP'
     
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
-      - name: Setup SteamCMD
-        uses: CyberAndrii/setup-steamcmd@v1
-        
-      - name: Install SCPSL Server
-        run: |
-          steamcmd +login anonymous +force_install_dir ${{ github.workspace }}/SCPSL +app_update 996560 validate +quit
 
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1
@@ -33,6 +26,4 @@ jobs:
         run: dotnet restore
       
       - name: Build
-        env:
-          SCPSL_REFERENCES: ${{ github.workspace }}/SCPSL/SCPSL_Data/Managed
         run: dotnet build --configuration Release --no-restore
