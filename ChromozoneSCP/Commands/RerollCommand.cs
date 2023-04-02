@@ -23,7 +23,8 @@ namespace ChromozoneSCP.Commands
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            throw new NotImplementedException();
+            response = "Hello World!";
+            return true;
         }
         
         private class AcceptRerollCommand : ICommand
