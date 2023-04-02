@@ -8,7 +8,7 @@ on:
     
 env:
   PROJECT_FILE: ChromozoneSCP/ChromozoneSCP.csproj
-  PROJECT_BIN: ChhromozoneSCP/bin/Release
+  PROJECT_BIN: ChromozoneSCP/bin/Release
     
 jobs:
   build:
@@ -37,4 +37,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Build Results
-          path: ${{ env.GITHUB_WORKSPACE }}/${{ env.PROJECT_BIN }}
+          path: ./${{ env.PROJECT_BIN }}
