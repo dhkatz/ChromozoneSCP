@@ -31,7 +31,7 @@ function Install-SteamCMD {
         
         Write-Host -Object "Setting up SteamCMD for the first time"
         $SteamCMDProcess = Start-Process -FilePath "$InstallPath\steamcmd.exe" -ArgumentList "validate +quit" -Wait -PassThru -NoNewWindow
-        if ($SteamCMDProcess.ExitCode -ne 0) {
+        if ($SteamCMDProcess.ExitCode -ne 0 -and $SteamCMDProcess.ExitCode -ne 7) {
             Write-Error "SteamCMD exited with code $($SteamCMDProcess.ExitCode)" -Category CloseError
         }
         
@@ -75,7 +75,7 @@ function Install-SCPSL {
         
         Write-Host -Object "Installing SCP: Secret Laboratory to $InstallPath"
         $SteamCMDProcess = Start-Process -FilePath "$SteamCMDPath\steamcmd.exe" -ArgumentList "+force_install_dir `"$InstallPath`" +login anonymous +app_update 996560 validate +quit" -Wait -PassThru -NoNewWindow
-        if ($SteamCMDProcess.ExitCode -ne 0) {
+        if ($SteamCMDProcess.ExitCode -ne 0 -and $SteamCMDProcess.ExitCode -ne 7) {
             Write-Error "SteamCMD exited with code $($SteamCMDProcess.ExitCode)" -Category CloseError
         }
         
