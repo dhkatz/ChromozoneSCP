@@ -8,6 +8,7 @@ on:
     
 env:
   PROJECT_FILE: ChromozoneSCP/ChromozoneSCP.csproj
+  PROJECT_BIN: ChhromozoneSCP/bin/Release
     
 jobs:
   build:
@@ -19,16 +20,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v3
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
 
 #      - name: Setup Nuget
 #        uses: iRebbok/setup-nuget@master
 
       - name: Install Dependencies
         working-directory: ${{ env.GITHUB_WORKSPACE }}
-        run: dotnet restore ${{ env.PROJECT_FILE }} --verbosity detailed
+        run: nuget restore ${{ env.PROJECT_FILE }}
       
       - name: Build
         working-directory: ${{ env.GITHUB_WORKSPACE }}
-        run: dotnet build ${{ env.PROJECT_FILE }} -c Release --no-restore
+        run: msbuild ${{ env.PROJECT_FILE }} /m /p:Configuration=Release
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Build Results
+          path: ${{ env.PROJECT_BIN }}
