@@ -39,6 +39,10 @@
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
+        <Reference Include="Assembly-CSharp-firstpass">
+            <HintPath>$(USERPROFILE)\.scpsl\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
         <Reference Include="UnityEngine.CoreModule">
             <HintPath>$(USERPROFILE)\.scpsl\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
             <Private>False</Private>
